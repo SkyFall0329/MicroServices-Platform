@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.bitoffer.msgcenter.mapper.MsgQueueMapper">
+    <resultMap id="msgMap" type="cn.bitoffer.msgcenter.model.MsgQueueModel">
+        <result column="id" property="id" />
+        <result column="msg_id" property="msgId"/>
+        <result column="to"  property="to"/>
+        <result column="subject"  property="subject"/>
+        <result column="priority"  property="priority"/>
+        <result column="channel"  property="channel"/>
+        <result column="template_id"  property="templateId"/>
+        <result column="template_data"  property="templateData"/>
+        <result column="status"  property="status"/>
+    </resultMap>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="msgQueueModel.id">
+        insert into ${tableName} (`msg_id`,`to`,`subject`,`priority`,`channel`,`template_id`,`template_data`,`status`)
+        values (#{msgQueueModel.msgId},#{msgQueueModel.to},#{msgQueueModel.subject},#{msgQueueModel.priority},#{msgQueueModel.channel},#{msgQueueModel.templateId},#{msgQueueModel.templateData},#{msgQueueModel.status});
+    </insert>
+
+    <select id="getMsgById" resultType="cn.bitoffer.msgcenter.model.MsgQueueModel" resultMap="msgMap">
+        select * from ${tableName} where msg_id = #{msgId}
+    </select>
+
+    <select id="getMsgsByStatus" resultMap="msgMap">
+        select * from ${tableName} where status = #{status} LIMIT #{limit}
+    </select>
+
+    <update id="setStatus">
+        update ${tableName} set status = #{status} where msg_id = #{msgId}
+    </update>
+
+    <update id="batchSetStatus">
+        update ${tableName} set status = #{status} where msg_id in ${msgIdList}
+    </update>
+</mapper>

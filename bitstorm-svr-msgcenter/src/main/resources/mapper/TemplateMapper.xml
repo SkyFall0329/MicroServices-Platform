@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.bitoffer.msgcenter.mapper.TemplateMapper">
+    <resultMap id="template" type="cn.bitoffer.msgcenter.model.TemplateModel">
+        <result column="id" property="id" />
+        <result column="template_id" property="templateId" />
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time"  property="modifyTime"/>
+        <result column="rel_template_id"  property="relTemplateId"/>
+        <result column="name"  property="name"/>
+        <result column="sign_name"  property="signName"/>
+        <result column="source_id"  property="sourceId"/>
+        <result column="channel"  property="channel"/>
+        <result column="subject"  property="subject"/>
+        <result column="content"  property="content"/>
+        <result column="status"  property="status"/>
+    </resultMap>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="templateModel.id">
+        insert into t_msg_template (`template_id`,`rel_template_id`,`name`,`sign_name`,`source_id`,`channel`,`subject`,`content`,`status`)
+        values (#{templateModel.templateId},#{templateModel.relTemplateId},#{templateModel.name},#{templateModel.signName},#{templateModel.sourceId},#{templateModel.channel},#{templateModel.subject},#{templateModel.content},#{templateModel.status});
+    </insert>
+    <delete id="deleteById">
+        delete from t_msg_template where template_id = #{templateId};
+    </delete>
+    <update id="update">
+        update t_msg_template
+        <set>
+            <if test="templateModel.relTemplateId != null">
+                `rel_template_id` = #{templateModel.relTemplateId},
+            </if>
+            <if test="templateModel.name != null">
+                `name` = #{templateModel.name},
+            </if>
+            <if test="templateModel.signName != null">
+                `sign_name` = #{templateModel.signName},
+            </if>
+            <if test="templateModel.sourceId != null">
+                `source_id` = #{templateModel.sourceId},
+            </if>
+            <if test="templateModel.channel != null">
+                `channel` = #{templateModel.channel},
+            </if>
+            <if test="templateModel.subject != null">
+                `subject` = #{templateModel.subject},
+            </if>
+            <if test="templateModel.content != null">
+                `content` = #{templateModel.content},
+            </if>
+            <if test="templateModel.status != null">
+                `status` = #{templateModel.status},
+            </if>
+        </set>
+        where template_id = #{templateModel.templateId};
+    </update>
+
+    <select id="getTemplateById" resultMap="template">
+        select * from t_msg_template where template_id = #{templateId};
+    </select>
+</mapper>

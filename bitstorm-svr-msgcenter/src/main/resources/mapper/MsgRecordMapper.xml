@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.bitoffer.msgcenter.mapper.MsgRecordMapper">
+    <resultMap id="msgRecordMap" type="cn.bitoffer.msgcenter.model.MsgRecordModel">
+        <result column="id" property="id" />
+        <result column="msg_id" property="msgId"/>
+        <result column="to"  property="to"/>
+        <result column="subject"  property="subject"/>
+        <result column="channel"  property="channel"/>
+        <result column="source_id"  property="sourceId"/>
+        <result column="template_id"  property="templateId"/>
+        <result column="template_data"  property="templateData"/>
+        <result column="status"  property="status"/>
+        <result column="retry_count"  property="retryCount"/>
+    </resultMap>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="msgRecordModel.id">
+        insert into t_msg_record (`msg_id`,`to`,`subject`,`source_id`,`channel`,`template_id`,`template_data`,`status`,`retry_count`)
+        values (#{msgRecordModel.msgId},#{msgRecordModel.to},#{msgRecordModel.subject},#{msgRecordModel.sourceId},#{msgRecordModel.channel},#{msgRecordModel.templateId},#{msgRecordModel.templateData},#{msgRecordModel.status},#{msgRecordModel.retryCount});
+    </insert>
+
+    <update id="setStatus">
+        update t_msg_record set status = #{status} where msg_id = #{msgId}
+    </update>
+
+    <update id="incrementRetryCount">
+        update t_msg_record set retry_count = #{newCount} where msg_id = #{msgId}
+    </update>
+
+    <select id="getMsgById" resultMap="msgRecordMap">
+        select * from t_msg_record where msg_id = #{msgId}
+    </select>
+</mapper>
